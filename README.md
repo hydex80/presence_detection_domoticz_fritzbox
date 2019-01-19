@@ -16,9 +16,9 @@ Since i was not happy with the available presence detection scripts which are wo
 This saves battery of your smartphone because there is no need of pinging all the time and its more accurate, because the router is made for having the correct information about network devices.
 
 This script is tested with a fritzbox 7581 router but should be working with more routers who has a tr064 protocol implementation. 
-dont
+
 What the script does is making use of the python script "fritzconnection" Thnx a lot to Author: Klaus Bremer
-sending a request to the router, Get all the available WLAN devices and its state. It worked very fast and reliable. When I set my iPhone in airplane mode after 2 seconds I get the good status. When my iPhone gets in screensaver modus it stays online (which is fine:) 
+sending a request to the router, Get all the available WLAN devices and its state. It is very fast and reliable. When I set my iPhone in airplane mode after 2 seconds I get the good status. When my iPhone gets in screensaver modus it stays Online in Domoticz (which is fine:) 
 Since I don't want to send to many requests to domoticz I compare the current state of domoticz with the state of de router. Are they similar? Then I do nothing. Are they different I update the switch state in domoticz
 
 Would be nice to have some feedback, maybe you can test this script on your own fritzbox. Maybe its also working on other routers wich are using the TR-064 protocol standard. feel free to let me know if it works
@@ -57,3 +57,6 @@ and write down the IDX of the 2 devices
 
 6. edit the scripts presence detection.sh and change all the settings including the IDX and host ip domoticz and your router.
 after that it should be working.
+
+Note
+This script is made for 2 devices, if you want 1 device of more then 2 devices you just have to change presence_detection.sh and change and code. If you want to make contributions to this script, feel free to do that! 
