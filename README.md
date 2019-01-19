@@ -5,7 +5,9 @@ Presence detection domoticz for fritzbox routers
 script Presence detection for domoticz  & Frizbox v1.01
 created by g.j fun - 19 jan 2019
 making use of  fritzconnection  url: https://pypi.org/project/fritzconnection/
+
 dependencies: lxml, jq and requests
+
 tested with: Fritzbox 7581  should work with all routers who supporting TR-064 protocol.
 place fritzconnection.py and fritzhosts.py in same directory as this script. 
 dont forget to change parameters router inside fritzconnection.py and activate TR-064 on router. 
