@@ -8,11 +8,12 @@ making use of  fritzconnection  url: https://pypi.org/project/fritzconnection/
 
 dependencies: lxml, jq and requests
 
-tested with: Fritzbox 7581  should work with all routers who supporting TR-064 protocol.
-place fritzconnection.py and fritzhosts.py in same directory as this script. 
+tested with: Fritzbox 7581 should work with all (fritzbox)routers who are supporting TR-064 protocol.
+ 
 dont forget to change parameters router inside fritzconnection.py and activate TR-064 on router. 
 standard debug information is on just set debug to  false to disable it. 
 
+Background information:
 Since i was not happy with the available presence detection scripts which are worked not very well with iPhone. I made a presence detection script using the TR-064 protocol of my Fritzbox router and get direct information of the router itself.
 This saves battery of your smartphone because there is no need of pinging all the time and its more accurate, because the router is made for having the correct information about network devices.
 
@@ -57,4 +58,4 @@ after that go to devices
 and write down the IDX of the 2 devices
 
 6. edit the scripts presence detection.sh and change all the settings including the IDX and host ip domoticz and your router.
-after that is should be working.
+after that it should be working.
