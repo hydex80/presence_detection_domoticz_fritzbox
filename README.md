@@ -11,15 +11,12 @@ dependencies: lxml, jq and requests
 
 tested with: Fritzbox 7581 should work with all (fritzbox)routers who are supporting TR-064 protocol.
  
-dont forget to change parameters router inside fritzconnection.py and activate TR-064 on router. 
-standard debug information is on just set debug to  false to disable it. 
-
 Background information:
 Since i was not happy with the available presence detection scripts which are worked not very well with iPhone. I made a presence detection script using the TR-064 protocol of my Fritzbox router and get direct information of the router itself.
 This saves battery of your smartphone because there is no need of pinging all the time and its more accurate, because the router is made for having the correct information about network devices.
 
 This script is tested with a fritzbox 7581 router but should be working with more routers who has a tr064 protocol implementation. 
-
+dont
 What the script does is making use of the python script "fritzconnection" Thnx a lot to Author: Klaus Bremer
 sending a request to the router, Get all the available WLAN devices and its state. It worked very fast and reliable. When I set my iPhone in airplane mode after 2 seconds I get the good status. When my iPhone gets in screensaver modus it stays online (which is fine:) 
 Since I don't want to send to many requests to domoticz I compare the current state of domoticz with the state of de router. Are they similar? Then I do nothing. Are they different I update the switch state in domoticz
