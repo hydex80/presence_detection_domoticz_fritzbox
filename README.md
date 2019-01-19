@@ -40,7 +40,8 @@ REQUEST > apt-get install python-requests
 2. Place the presence detection script below inside same directory as fritzconnection.py and fritzhosts.py 
 
 3. edit the fritzconnection.py and change 
-# FritzConnection defaults:
+
+fritzconnection defaults: 
 FRITZ_IP_ADDRESS = '<put here your router ip like 192.168.178.1>'
 
 4. Activate on your router the TR-064 protocol on fritzbox it is in >home network > network > network settings > Allow access for applications 
