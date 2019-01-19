@@ -1,15 +1,15 @@
-# presence_detection_fritzbox
-Presence detection domoticz for fritzbox routers
 #presence_detection.sh
 
-#script Presence detection for domoticz  & Frizbox v1.01
-#created by g.j fun - 19 jan 2019
-#making use of  fritzconnection  url: https://pypi.org/project/fritzconnection/
-#dependencies: lxml, jq and requests
-#tested with: Fritzbox 7581  should work with all routers who supporting TR-064 protocol.
-#place fritzconnection.py and fritzhosts.py in same directory as this script. 
-#dont forget to change parameters router inside fritzconnection.py and activate TR-064 on router. 
-#standard debug information is on just set debug to  false to disable it. 
+Presence detection domoticz for fritzbox routers
+
+script Presence detection for domoticz  & Frizbox v1.01
+created by g.j fun - 19 jan 2019
+making use of  fritzconnection  url: https://pypi.org/project/fritzconnection/
+dependencies: lxml, jq and requests
+tested with: Fritzbox 7581  should work with all routers who supporting TR-064 protocol.
+place fritzconnection.py and fritzhosts.py in same directory as this script. 
+dont forget to change parameters router inside fritzconnection.py and activate TR-064 on router. 
+standard debug information is on just set debug to  false to disable it. 
 
 Since i was not happy with the available presence detection scripts which are worked not very well with iPhone. I made a presence detection script using the TR-064 protocol of my Fritzbox router and get direct information of the router itself.
 This saves battery of your smartphone because there is no need of pinging all the time and its more accurate, because the router is made for having the correct information about network devices.
