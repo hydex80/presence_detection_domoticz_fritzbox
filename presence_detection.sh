@@ -14,14 +14,14 @@
 
 #setup device(s) change values here
 ip_device1=192.168.178.22
-name_device1="Iphone GJ"
+name_device1="your smartphone or other device name"
 ip_device2=192.168.178.27
-name_device2="Iphone Pat"
+name_device2="your smartphone 2 or other device name"
 idxdevice1=424
 idxdevice2=428
 
 #setup  router en domoticz change values
-password_fritzbox=rapped9211
+password_fritzbox=yourpasswordofyour router (no wifi but http access) 
 host_domoticz=192.168.178.33:8080
 
 #set debug to true or false to see logging information 
