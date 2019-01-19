@@ -4,13 +4,14 @@
 
 #script Presence detection for domoticz  & Frizbox v1.01
 #created by g.j fun - 19 jan 2019
+#https://github.com/hydex80/presence_detection_domoticz_fritzbox/
 #making use of  fritzconnection  url: https://pypi.org/project/fritzconnection/
 #dependencies: lxml, jq and requests
 #tested with: Fritzbox 7581  should work with all routers who supporting TR-064 protocol.
 #place fritzconnection.py and fritzhosts.py in same directory as this script. 
 #dont forget to change parameters router inside fritzconnection.py and activate TR-064 on router. 
 #standard debug information is on just set debug to  false to disable it. 
-
+#more info see readme.md
 
 #setup device(s) change values here
 ip_device1=192.168.178.22
@@ -20,7 +21,7 @@ name_device2="your smartphone 2 or other device name"
 idxdevice1=424
 idxdevice2=428
 
-#setup  router en domoticz change values
+#setup  router en domoticz change values here
 password_fritzbox=yourpasswordofyour router (no wifi but http access) 
 host_domoticz=192.168.178.33:8080
 
