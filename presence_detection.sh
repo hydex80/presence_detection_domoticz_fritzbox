@@ -2,27 +2,28 @@
 
 #presence_detection.sh
 
-#script Presence detection for domoticz  & Frizbox v1.01
-#created by g.j fun - 19 jan 2019
-#https://github.com/hydex80/presence_detection_domoticz_fritzbox/
+#script Presence detection for domoticz  & Frizbox v1.02
+#created by g.j fun - 21 jan 2019
 #making use of  fritzconnection  url: https://pypi.org/project/fritzconnection/
 #dependencies: lxml, jq and requests
 #tested with: Fritzbox 7581  should work with all routers who supporting TR-064 protocol.
 #place fritzconnection.py and fritzhosts.py in same directory as this script. 
 #dont forget to change parameters router inside fritzconnection.py and activate TR-064 on router. 
 #standard debug information is on just set debug to  false to disable it. 
-#more info see readme.md
+# if you have a repeater please specify ip below. 
 
 #setup device(s) change values here
 ip_device1=192.168.178.22
-name_device1="your smartphone or other device name"
+name_device1="Iphone GJ"
 ip_device2=192.168.178.27
-name_device2="your smartphone 2 or other device name"
+name_device2="Iphone Pat"
 idxdevice1=424
 idxdevice2=428
 
-#setup  router en domoticz change values here
-password_fritzbox=yourpasswordofyour router (no wifi but http access) 
+#setup  router, extender and  domoticz change values
+password_fritzbox=yourpassword
+host_fritzbox=192.168.178.1
+host_extender=192.168.178.21
 host_domoticz=192.168.178.33:8080
 
 #set debug to true or false to see logging information 
@@ -45,17 +46,26 @@ fi
 
 #get device status of devices in Route
 
-output_router=$(python $cwd/fritzhosts.py -p$password_fritzbox)
+output_router=$(python $cwd/fritzhosts.py -i $host_fritzbox -p$password_fritzbox)
+echo "getting output router" ;
 status_router_device1=$(grep "$ip_device1" <<<"$output_router" | grep "active") 
 status_router_device2=$(grep "$ip_device2" <<<"$output_router" | grep "active") 
+sleep 2;
+output_extender==$(python $cwd/fritzhosts.py -i $host_extender -p$password_fritzbox)
+status_extender_device1=$(grep "$ip_device1" <<<"$output_extender" | grep "active") 
+status_extender_device2=$(grep "$ip_device2" <<<"$output_extender" | grep "active") 
+
 
 if [ "$enable_debug" == "true" ]; then
 echo "output router devices = $output_router" 
+echo "output extender devices = $output_extender" 
 echo "status router device 1 = $status_router_device1"
 echo "status router device 2 = $status_router_device2"
+echo "status extender device 1 = $status_extender_device1"
+echo "status extender device2 = $status_extender_device2"
 fi
 
-if [ -z "$status_router_device1" ]; then
+if [ -z "$status_router_device1" ] && [ -z "$status_extender_device1" ]; then
 # device is not active in router so set it to off
 status_router_device1="Off" 
 else
@@ -77,7 +87,7 @@ wget -q --delete-after "http://$host_domoticz/json.htm?type=command&param=addlog
  
 fi
 
-if [ -z "$status_router_device2" ]; then
+if [ -z "$status_router_device2" ] && [ -z "$status_extender_device2" ]; then
 # device is not active in router so set it to off
 status_router_device2="Off" 
 else
