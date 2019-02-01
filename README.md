@@ -27,10 +27,8 @@ Installation instructions:
 
 Make sure to give your devices a static ip in your router, we use this ip to target the devices in the script. 
 
-1. First install fritzconnection see for more information: https://pypi.org/project/fritzconnection/
-It was a really pain in the @$# to install fritzconnection by using PIP takes ages so feel free to make use of the attachments in this post they are the compiled versions for Raspberry pi Jessie. 
 
-2. install dependencies 
+1. install dependencies 
 JQ > sudo apt-get install jq
 Python > sudo apt-get install python3.6
 LXML > sudo apt-get install python-lxml
