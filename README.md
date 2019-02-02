@@ -29,10 +29,11 @@ Make sure to give your devices a static ip in your router, we use this ip to tar
 
 
 1. install dependencies 
-JQ > sudo apt-get install jq
-Python > sudo apt-get install python3.6
-LXML > sudo apt-get install python-lxml
-REQUEST > apt-get install python-requests
+sudo apt-get install python3.6 jq python-lxml python-requests
+
+and update en upgrade
+sudo apt-get update
+sudo apt-get upgrade
 
 2. Place the presence detection script below inside same directory as fritzconnection.py and fritzhosts.py 
 
