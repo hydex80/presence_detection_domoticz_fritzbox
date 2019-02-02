@@ -39,7 +39,9 @@ and update en upgrade with:
 sudo apt-get update
 sudo apt-get upgrade
 
-2. Place the presence detection script below inside same directory as fritzconnection.py and fritzhosts.py 
+2.  Download script with:
+
+get git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox 
 
 3. edit the fritzconnection.py and change 
 
