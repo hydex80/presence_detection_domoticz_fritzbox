@@ -20,7 +20,7 @@ name_device2="Iphone Pat"
 idxdevice1=424
 idxdevice2=428
 
-#setup  router, extender and  domoticz change values
+#setup  router (http://fritz.box), extender (Fritzbox repeater http://fritz.repeater) and  domoticz change values
 password_fritzbox=yourpassword
 host_fritzbox=192.168.178.1
 host_extender=192.168.178.21
