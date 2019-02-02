@@ -41,7 +41,7 @@ sudo apt-get upgrade
 
 2.  Download script with:
 
-get git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox 
+git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox 
 
 3. edit the fritzconnection.py and change 
 
