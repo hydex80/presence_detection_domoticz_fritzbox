@@ -28,10 +28,12 @@ Installation instructions:
 Make sure to give your devices a static ip in your router, we use this ip to target the devices in the script. 
 
 
-1. install dependencies 
+1. install dependencies:
+
 sudo apt-get install python3.6 jq python-lxml python-requests
 
-and update en upgrade
+and update en upgrade with: 
+
 sudo apt-get update
 sudo apt-get upgrade
 
