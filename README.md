@@ -37,6 +37,7 @@ sudo apt-get install python jq python-lxml python-requests
 and update en upgrade with: 
 
 sudo apt-get update
+
 sudo apt-get upgrade
 
 2.  Download script with:
