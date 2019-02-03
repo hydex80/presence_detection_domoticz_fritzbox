@@ -7,7 +7,7 @@ created by g.j fun - 19 jan 2019
 
 making use of  fritzconnection  url: https://pypi.org/project/fritzconnection/
 
-dependencies: lxml, jq and requests
+dependencies: python lxml, jq and requests
 
 tested with: Fritzbox 7581 should work with all (fritzbox)routers who are supporting TR-064 protocol.
  
