@@ -32,7 +32,7 @@ Make sure to give your devices a static ip in your router http://fritz.box Login
 
 1. install dependencies:
 
-sudo apt-get install python3.6 jq python-lxml python-requests
+sudo apt-get install python jq python-lxml python-requests
 
 and update en upgrade with: 
 
