@@ -13,10 +13,10 @@
 # if you have a repeater please specify ip below. 
 
 
-#setup device(s) change values here Mac adresses can be found in your router > home network > network > devices pencil > device information
-mac_device1=AC:1F:74:41:2A:62
+#setup device(s) change values here
+mac_device1=AC:1F:74:41:2C:62
 name_device1="Iphone GJ"
-mac_device2=20:EE:28:C1:EF:B0
+mac_device2=20:EE:28:C1:EE:B0
 name_device2="Iphone Pat"
 idxdevice1=424
 idxdevice2=428
@@ -182,7 +182,7 @@ if [ "$status_router_device2" == "$status_domoticz_device2" ]; then
 echo $(date -u) "status router and domoticz for $name_device2 are simular, we do nothing" 
 else
 #router status vs domoticz status are not equal we set domoticz status to router status. 
-echo $(date -u) "status router is not simular to status domoticz. ${GREEN} We change status domoticz for $name_device2 to  $status_router_device2 ${NC}" 
+echo -e $(date -u) "status router is not simular to status domoticz. ${GREEN} We change status domoticz for $name_device2 to  $status_router_device2 ${NC}" 
 #we change the value in domoticz
 wget -q --delete-after "http://$host_domoticz/json.htm?type=command&param=switchlight&idx=$idxdevice2&switchcmd=$status_router_device2" >/dev/null 2>&1
 
