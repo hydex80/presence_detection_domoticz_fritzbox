@@ -13,7 +13,7 @@
 # if you have a repeater please specify ip below. 
 
 
-#setup device(s) change values here
+#setup device(s) change values here Mac adresses can be found in your router > home network > network > devices pencil > device information
 mac_device1=AC:1F:74:41:2A:62
 name_device1="Iphone GJ"
 mac_device2=20:EE:28:C1:EF:B0
