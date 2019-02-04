@@ -2,8 +2,8 @@
 
 Presence detection domoticz for fritzbox routers
 
-script Presence detection for domoticz  & Frizbox v1.01
-created by g.j fun - 19 jan 2019
+script Presence detection for domoticz  & Frizbox v1.04
+created by g.j funcke - 4 februari 2019
 
 making use of  fritzconnection  url: https://pypi.org/project/fritzconnection/
 
