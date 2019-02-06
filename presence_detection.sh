@@ -14,9 +14,9 @@
 
 
 #setup device(s) change values here
-mac_device1=AC:1F:74:41:2C:62
+mac_device1=AC:00:74:00:2C:00
 name_device1="Iphone GJ"
-mac_device2=20:EE:28:C1:EE:B0
+mac_device2=00:EE:00:C1:00:00
 name_device2="Iphone Pat"
 idxdevice1=424
 idxdevice2=428
