@@ -44,11 +44,13 @@ give type: switch and give it a name
 after that go to devices
 and write down the IDX of all the devices.
 
-4. Write down the ip adres of your router and of your repeater (if you have any)  
+4. Write down the ip adres of your router and of your repeater (if you have any)
 
-5. Run the script with: sudo bash presence2.sh 
+5. Write down the mac adresses of your devices you want to monitor. 
 
-6. A installer will appear fill in all the questions and at the end copy the line for your crontab. (run crontab with: crontab -e) 
+6. Run the script with: sudo bash presence2.sh 
+
+7. A installer will appear fill in all the questions and at the end copy the line for your crontab. (run crontab with: crontab -e) 
 ------------------------
 
 That's it have fun!  
