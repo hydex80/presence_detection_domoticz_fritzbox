@@ -2,8 +2,8 @@
 
 Presence detection domoticz for fritzbox routers
 
-script Presence detection for domoticz  & Frizbox v1.04
-created by g.j funcke - 4 februari 2019
+script Presence detection for domoticz  & Fritzbox v2.0
+created by g.j funcke - 23  feb 2019
 
 making use of  fritzconnection  url: https://pypi.org/project/fritzconnection/
 
@@ -26,43 +26,34 @@ You can find the repeaters Ip adres by going to: http://fritz.repeater use the s
 
 Would be nice to have some feedback, maybe you can test this script on your own fritzbox. Maybe its also working on other routers wich are using the TR-064 protocol standard. feel free to let me know if it works
 
+-------------------------
 Installation instructions:
 
 Make sure to give your devices a static ip in your router http://fritz.box Login, and go to Home network > network and then click on the device you want to use > click on pencil and check: Always assign this network device the same IPv4 address, we use this ip to target the devices in the script. 
 
-1. install dependencies:
+1. Activate on your router the TR-064 protocol on fritzbox it is in >home network > network > network settings > Allow access for applications 
 
-sudo apt-get install python jq python-lxml python-requests
+2. Download script:
+git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox
 
-and update en upgrade with: 
-
-sudo apt-get update
-
-sudo apt-get upgrade
-
-2.  Download script with:
-
-git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox 
-
-3. edit the fritzconnection.py and change 
-
-fritzconnection defaults: 
-FRITZ_IP_ADDRESS = '<put here your router ip like 192.168.178.1>'
-
-4. Activate on your router the TR-064 protocol on fritzbox it is in >home network > network > network settings > Allow access for applications 
-
-(you can test the script by running: python fritzconnection.py -p(put here password of router login (so no wifi password)) for example -pmypassword if you see a version of the router it works! if you see errors it has to do with dependencies witch are missing so install those first to get it working
-
-5. Go to domoticz and make dummy hardware for your smartphones 
+3. Go to domoticz and make dummy hardware for your smartphones
 
 settings > hardware > new > dummy give it a name for example smartphones
-make 2 virtual sensors by clicking on make virtual sensor
+make as many virtual sensors as you want  by clicking on make virtual sensor
 give type: switch and give it a name
 after that go to devices
-and write down the IDX of the 2 devices
+and write down the IDX of all the devices.
 
-6. edit the scripts presence detection.sh and change all the settings including the IDX and host ip domoticz and your  host router and host repeater (if you have any).
-after that it should be working.
+4. Write down the ip adres of your router and of your repeater (if you have any)  
 
-Note
-This script is made for 2 devices, if you want 1 device of more then 2 devices you just have to change presence_detection.sh and change and code. If you want to make contributions to this script, feel free to do that! 
+5. Run the script with: sudo bash presence2.sh 
+
+6. A installer will appear fill in all the questions and at the end copy the line for your crontab. (run crontab with: crontab -e) 
+------------------------
+
+That's it have fun!  
+
+
+
+
+
