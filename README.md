@@ -54,6 +54,16 @@ and write down the IDX of all the devices.
 ------------------------
 
 That's it have fun!  
+------------------------
+If you want to re-install:
+run: sudo bash presence2.sh install 
+
+for debugging:
+run: sudo bash presence2.sh debug
+
+if you dont want to use sudo make the script executable with:
+sudo chmod +x presence2.sh 
+after that you can run the script with bash presence2.sh
 
 
 
