@@ -36,36 +36,36 @@ Make sure to give your devices a static ip in your router http://fritz.box Login
 2. Download script:
 git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox
 
-3. Go to domoticz and make dummy hardware for your smartphones
+3. Write down the ip adres of your router and of your repeater (if you have any)
+
+4. Write down the mac adresses of your devices you want to monitor. 
+
+5. Run the script with: sudo bash presence2.sh 
+
+6. A installer will appear fill in all the questions and at the end copy the line for your crontab. (run crontab with: crontab -e) 
+------------------------
+
+That's it have fun!  
+------------------------
+If you want to re-install:
+run: sudo bash presence_detection.sh install 
+
+for debugging:
+run: sudo bash presence_detection.sh debug
+
+if you don't want to use sudo make the script executable with:
+sudo chmod +x presence_detection.sh 
+after that you can run the script with bash presence_detection.sh
+
+If you don't want that the script automatically creates dummy hardware and sensors inside domoticz you can do it manually:
+
+->Go to domoticz and make dummy hardware for your smartphones
 
 settings > hardware > new > dummy give it a name for example smartphones
 make as many virtual sensors as you want  by clicking on make virtual sensor
 give type: switch and give it a name
 after that go to devices
 and write down the IDX of all the devices.
-
-4. Write down the ip adres of your router and of your repeater (if you have any)
-
-5. Write down the mac adresses of your devices you want to monitor. 
-
-6. Run the script with: sudo bash presence2.sh 
-
-7. A installer will appear fill in all the questions and at the end copy the line for your crontab. (run crontab with: crontab -e) 
-------------------------
-
-That's it have fun!  
-------------------------
-If you want to re-install:
-run: sudo bash presence2.sh install 
-
-for debugging:
-run: sudo bash presence2.sh debug
-
-if you dont want to use sudo make the script executable with:
-sudo chmod +x presence2.sh 
-after that you can run the script with bash presence2.sh
-
-
 
 
 
