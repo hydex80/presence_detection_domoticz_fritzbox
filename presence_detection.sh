@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#presence detection 2.0 Fritzbox by G.J Funcke
+#presence detection 2.1 Fritzbox by G.J Funcke
 #License: MIT https://opensource.org/licenses/MIT
-#Author: G.J. Funcke
+#Author: G.J. Funcke 
 #Source: https://github.com/hydex80/presence_detection_domoticz_fritzbox
 
 #Making use: of fritzconnection 
@@ -32,7 +32,7 @@ echo "debug enabled"
 show_debug=1 
 clear;
 echo "------------------------------------------------------------"
-echo "Presence detection for Domoticz using Fritzbox version 2.0"
+echo "Presence detection for Domoticz using Fritzbox version 2.1"
 echo "------------------------------------------------------------"
 echo 
 
@@ -50,7 +50,7 @@ source $cwd/config.txt
 
 #check if all variables are set 
 if [[ -z $ip_fritzbox || -z $pass_fritzbox || -z $ip_domoticz || -z $device_names || -z $device_macs || -z $device_idx  ]]; then
-echo "The config file is corrupt, please run: sudo bash presence2.sh install"
+echo "The config file is corrupt!"
 config_file=1;
 read -p "Do you want to run presence_detection.sh install  Y/n " -n 1 -r
                 echo    
@@ -75,8 +75,8 @@ while [ $i -lt ${#device_names[@]} ]
 do
 
 	echo "checking:${device_names[i]}"
-	status_domoticz_device=$(curl -s  'http://'$ip_domoticz'/json.htm?type=devices&rid='${device_idx[i]} | jq -r [.result][][].Data)   
-
+	
+	status_domoticz_device=$(curl 'http://'$ip_domoticz'/json.htm?type=devices&rid='${device_idx[i]} | jq -r [.result][][].Data)   
 	status_fritzbox_device=$(python $cwd/fritzhosts.py -i $ip_fritzbox -p $pass_fritzbox -d ${device_macs[i]})
 
 	sleep 2; 
@@ -161,7 +161,7 @@ fi
 # install script
 if [ "$run_install" = 1 ]; then
 
-	# This is a user friendly installer for presence detection fritzbox 1.0.4
+	# This is a user friendly installer for presence detection fritzbox 2.1
 
 
 
@@ -187,7 +187,8 @@ if [ "$run_install" = 1 ]; then
 
         #
                 if [[ $REPLY =~ ^[Yy]$ ]]; then
-          echo "continue install script"       
+        sudo rm -f $cwd/config.txt 
+	 echo "continue install script"       
 	else
 	echo "installation aborted" 
 	exit 1
@@ -237,6 +238,14 @@ if [ "$run_install" = 1 ]; then
 	fi
 
 
+
+
+
+
+
+
+
+
 	#questions for config file 
 	echo  
 	echo -n "Enter ip adres of fritzbox default:192.168.178.1  and press [ENTER]: "
@@ -248,9 +257,45 @@ if [ "$run_install" = 1 ]; then
 	echo -n "Enter ip adres of fritz repeater (leave blank if you dont have any)  and press [ENTER]: "
 	read ip_repeater
 	echo "ip_repeater=$ip_repeater" >> config.txt
-	echo -n "Enter ip adres of domoticz including port example: 192.168.178.33:8080 and press [ENTER]: "
+	echo -n "Enter ip adres of domoticz including port default: 127.0.0.1:8080 and press [ENTER]: "
 	read ip_domoticz 
 	echo "ip_domoticz=$ip_domoticz" >> config.txt
+
+
+	#check status domoticz
+	status_domoticz=$(curl -s  'http://'$ip_domoticz'/json.htm?type=command&param=getversion' | jq -r .status)
+
+	if [ -z $status_domoticz ]; then
+
+	echo  "there is a problem retrieving information of  domoticz, Restart install script and  check domoticz ip settings or check if domoticz is offline"
+	exit 1 
+
+	else
+	echo -e "Status domoticz ${GREEN}[OK]${NC}"
+	fi
+
+	read -p "Do you want to make virtual hardware and virtual sensors automatically in Domoticz   Y/n " -n 1 -r
+	echo    
+                
+                         
+                if [[ $REPLY =~ ^[Yy]$ ]]; then
+                        create_auto=1
+
+                        idx_virtual_hardware=$(curl -s  'http://'$ip_domoticz'/json.htm?type=command&param=addhardware&htype=15&name=presence_detection&enabled=true&datatimeout=0' | jq -r .idx )
+                        
+                        if [ -z $idx_virtual_hardware ]; then
+
+                        echo  "there is a problem adding the virtual hardware to domoticz. $idx_virtual_hardware"
+                        exit 1
+
+                        else
+                        echo -e "Virtual hardware Presence_detection (IDX: $idx_virtual_hardware) added to domoticz ${GREEN}[OK]${NC}"
+                        fi
+
+		fi
+
+
+
 
 	echo -n "Enter number of devices you want to add  and press [ENTER]: "
 	read number_of_devices
@@ -258,6 +303,7 @@ if [ "$run_install" = 1 ]; then
 	number_of_devices=$((number_of_devices+1))
 	while [ $i -lt $number_of_devices ]
 	do
+
 		echo -n "Enter name of device$i use underscore instead of spaces and press [ENTER]:" 
 		read names
 
@@ -270,10 +316,28 @@ if [ "$run_install" = 1 ]; then
 		echo -n "Enter mac adress of device$i for example: 20:5E:A8:C1:AE:C0 and press [ENTER]:" 
 		read -a mac
 		device_mac+=("$mac")
+ 
+	if [ "$create_auto" -eq "1" ];then
 
+			add_virtual_device=$(curl -s  'http://'$ip_domoticz'/json.htm?type=createdevice&idx='$idx_virtual_hardware'&sensorname='$dev_name'&sensormappedtype=0xF449')
+                        status_virtual_device=$(jq -r .status  <<< "$add_virtual_device") 
+                        idx_virtual_device=$(jq -r .idx  <<< "$add_virtual_device") 
+
+                        if [ -z $status_virtual_device ]; then
+
+                        echo  "there is a problem adding the virtual device to domoticz. $add_virtual_device"
+                        exit 1
+
+                        else
+                        echo -e "Virtual device $dev_name (IDX: $idx_virtual_device) added to domoticz ${GREEN}[OK]${NC}"
+                        fi
+		device_idx+=("$idx_virtual_device")
+	else 
 		echo -n "Enter IDX  of device $i and press  [ENTER]:" 
 		read -a idx      
 		device_idx+=("$idx")
+
+	fi
 
 	i=$[$i+1] 
 	done
