@@ -112,25 +112,25 @@ give type: switch and give it a name
 after that go to devices
 and write down the IDX of all the devices.
 
-**5. I want do debugging the proces how can i do that? 
+**6. I want do debugging the proces how can i do that?** 
 
 for debugging:
 ```run: sudo bash presence_detection.sh debug```
 
-**6. I want to make the script executable how can i do that?
+**7. I want to make the script executable how can i do that?**
 
 if you don't want to use sudo  make the script executable with:
 ```sudo chmod +x presence_detection.sh``` 
 after that you can run the script with
 ```bash presence_detection.sh```
 
-**7.There are multiple dummy hardware named presence_detection in domoticz, how can this be?** 
+**8.There are multiple dummy hardware named presence_detection in domoticz, how can this be?** 
 
 You have run the install script twice or more. The script is not detecting if there is already a dummy device inside domoticz
 everytime you run the install script it will make a new dummy hardware with devices. Can can remove the old ones manually
 go to domoticz > settings > hardware > delete dummy device presence_detection
 
-**8. I reinstalled domoticz and restore its backup, how can i use this script again?**
+**9. I reinstalled domoticz and restore its backup, how can i use this script again?**
 Goto settings> devices > click tab hardware en write down all the idx of the devices. In the installation script choose N on the question automatically install dummy devices and fill in your idx afterwards
 
 
