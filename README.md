@@ -133,6 +133,14 @@ go to domoticz > settings > hardware > delete dummy device presence_detection
 **9. I reinstalled domoticz and restore its backup, how can i use this script again?**
 Goto settings> devices > click tab hardware en write down all the idx of the devices. In the installation script choose N on the question automatically install dummy devices and fill in your idx afterwards
 
+**10. How can install a new version of the script**
+1. make a backup of your config.txt file 
+2. download the script
+```
+sudo git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox
+```
+3. restore the config file inside the map and you're up and running again. 
+
 
 
 
