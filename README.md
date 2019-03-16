@@ -35,13 +35,13 @@ Make sure to give your devices a static ip in your router http://fritz.box Login
 1. Activate on your router the TR-064 protocol on fritzbox it is in >home network > network > network settings > Allow access for applications 
 
 2. Download script:
-sudo git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox
+```sudo git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox```
 
 3. Write down the ip adres of your router and of your repeater (if you have any)
 
 4. Write down the mac adresses of your devices you want to monitor. 
 
-5. Run the script with: sudo bash presence2.sh 
+5. Run the script with: ```sudo bash presence_detection.sh``` 
 
 6. A installer will appear fill in all the questions and at the end copy the line for your crontab. (run crontab with: crontab -e) 
 ------------------------
@@ -74,7 +74,7 @@ sudo bash presence_detection.sh install
 ```
 sudo apt-get install python jq python-lxml python-requests
 ```
-2. If its still not working check ip adresses and mac adresses of you devices inside config file. If there is no config file something is work, reinstall the script with: ```sudo bash presence_detection.sh install```  
+2. If its still not working check ip adresses and mac adresses of you devices inside config file. If there is no config file something is wrong, reinstall the script with: ```sudo bash presence_detection.sh install```  
 3. Check if there is a dummy hardware goto:
 ```
 domoticz > settings> hardware >
@@ -123,6 +123,16 @@ if you don't want to use sudo  make the script executable with:
 ```sudo chmod +x presence_detection.sh``` 
 after that you can run the script with
 ```bash presence_detection.sh```
+
+**7.There are multiple dummy hardware named presence_detection in domoticz, how can this be?** 
+
+You have run the install script twice or more. The script is not detecting if there is already a dummy device inside domoticz
+everytime you run the install script it will make a new dummy hardware with devices. Can can remove the old ones manually
+go to domoticz > settings > hardware > delete dummy device presence_detection
+
+**8. I reinstalled domoticz and restore its backup, how can i use this script again?**
+Goto settings> devices > click tab hardware en write down all the idx of the devices. In the installation script choose N on the question automatically install dummy devices and fill in your idx afterwards
+
 
 
 
