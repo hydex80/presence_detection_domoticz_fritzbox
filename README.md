@@ -2,15 +2,16 @@
 
 Presence detection domoticz for fritzbox routers
 
-script Presence detection for domoticz  & Fritzbox v2.0
-created by g.j funcke - 23  feb 2019
+script Presence detection for domoticz  & Fritzbox v2.2
+created by g.j funcke - 16  mar 2019
 
 making use of  fritzconnection  url: https://pypi.org/project/fritzconnection/
 
 dependencies: python lxml, jq and requests
 
 tested with: Fritzbox 7581 should work with all (fritzbox)routers who are supporting TR-064 protocol.
- 
+works on debia linux only. 
+
 Background information:
 Since i was not happy with the available presence detection scripts which are worked not very well with iPhone. I made a presence detection script using the TR-064 protocol of my Fritzbox router and get direct information of the router itself.
 This saves battery of your smartphone because there is no need of pinging all the time and its more accurate, because the router is made for having the correct information about network devices.
@@ -34,7 +35,7 @@ Make sure to give your devices a static ip in your router http://fritz.box Login
 1. Activate on your router the TR-064 protocol on fritzbox it is in >home network > network > network settings > Allow access for applications 
 
 2. Download script:
-git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox
+sudo git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox
 
 3. Write down the ip adres of your router and of your repeater (if you have any)
 
