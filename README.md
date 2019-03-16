@@ -1,6 +1,6 @@
-#presence_detection.sh
+presence_detection.sh
 
-Presence detection domoticz for fritzbox routers
+# Presence detection domoticz for fritzbox routers
 
 script Presence detection for domoticz  & Fritzbox v2.2
 created by g.j funcke - 16  mar 2019
@@ -28,7 +28,7 @@ You can find thIfe repeaters Ip adres by going to: http://fritz.repeater use the
 Would be nice to have some feedback, maybe you can test this script on your own fritzbox. Maybe its also working on other routers wich are using the TR-064 protocol standard. feel free to let me know if it works
 
 -------------------------
-###### Installation instructions:
+# Installation instructions:
 
 Make sure to give your devices a static ip in your router http://fritz.box Login, and go to Home network > network and then click on the device you want to use > click on pencil and check: Always assign this network device the same IPv4 address, we use this ip to target the devices in the script. 
 
@@ -46,7 +46,7 @@ sudo git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox
 6. A installer will appear fill in all the questions and at the end copy the line for your crontab. (run crontab with: crontab -e) 
 ------------------------
 
-###### Frequently asked questions(FAQ)
+# Frequently asked questions(FAQ)
 
 
 **1.How can i do fresh re-install?:**
