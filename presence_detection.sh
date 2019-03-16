@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#presence detection 2.1 Fritzbox by G.J Funcke
+#presence detection 2.2 Fritzbox by G.J Funcke
 #License: MIT https://opensource.org/licenses/MIT
 #Author: G.J. Funcke 
 #Source: https://github.com/hydex80/presence_detection_domoticz_fritzbox
@@ -32,7 +32,7 @@ echo "debug enabled"
 show_debug=1 
 clear;
 echo "------------------------------------------------------------"
-echo "Presence detection for Domoticz using Fritzbox version 2.1"
+echo "Presence detection for Domoticz using Fritzbox version 2.2"
 echo "------------------------------------------------------------"
 echo 
 
@@ -161,7 +161,7 @@ fi
 # install script
 if [ "$run_install" = 1 ]; then
 
-	# This is a user friendly installer for presence detection fritzbox 2.1
+	# This is a user friendly installer for presence detection fritzbox 2.2
 
 
 
@@ -175,7 +175,7 @@ if [ "$run_install" = 1 ]; then
 	device_mac=()
 	device_idx=()
 	echo "--------------------------------------------------------"
-	echo " Installer for fritzbox presence detection 2.0"
+	echo " Installer for fritzbox presence detection 2.2"
 	echo " before you continue make sure you made a virtual dummy in domoticz"
 	echo " in domoticz and write down the idx numbers of the devices" 
 	echo "--------------------------------------------------------"
@@ -196,36 +196,48 @@ if [ "$run_install" = 1 ]; then
 	fi
 
 
-
-	check_depencies=$(apt-cache show python jq python-lxml python-requests)
-	python_check=$(grep "Package: python" <<<"$check_depencies") 
-	lxml_check=$(grep "Package: python-lxml" <<<"$check_depencies")
-	jq_check=$(grep "Package: jq" <<<"$check_depencies")
-	request_check=$(grep "Package: python-requests" <<<"$check_depencies")
-	echo "status required dependencies: "
-	if [ -z "$python_check" ]; then 
-		echo -e "python:${RED}[not installed]${NC}"
-	else 
-		echo -e "python:${GREEN}[OK]${NC}"
-	fi
-	if [ -z "$lxml_check" ]; then 
-        	echo -e "python-lxml:${RED}[not installed]${NC}"
-        else 
-        	echo -e "python-lxml:${GREEN}[OK]${NC}"
-        fi
-   	if [ -z "$request_check" ]; then 
-        	echo -e "python-requests:${RED}[not installed]${NC}"
-        else 
-        	echo -e "python-requests:${GREEN}[OK]${NC}"
-        fi
-	if [ -z "$jq_check" ]; then 
-        	echo -e "jq:${RED}[not installed]${NC}"
-        else 
-        	echo -e "jq:${GREEN}[OK]${NC}"
-        fi	
+check_jq=$(dpkg-query -W -f='${Status} ${Version}\n' jq)
+check_python=$(dpkg-query -W -f='${Status} ${Version}\n' python)
+check_lxml=$(dpkg-query -W -f='${Status} ${Version}\n' python-lxml)
+check_requests=$(dpkg-query -W -f='${Status} ${Version}\n' python-requests)
 
 
-	if [[ -z $python_check || -z $lxml_check || -z $jq_check || -z $request_check ]]; then
+
+if [[ $check_jq == *"installed"* ]]; then
+echo -e "JQ:${GREEN}[OK]${NC}" 
+
+else
+echo -e "JQ:${RED}[not installed!]${NC}"
+check_dep=0
+fi
+
+if [[ $check_python == *"installed"* ]]; then
+echo -e "Python:${GREEN}[OK]${NC}" 
+
+else
+echo -e "Python:${RED}[not installed!]${NC}"
+check_dep=0
+fi
+
+
+if [[ $check_lxml == *"installed"* ]]; then
+echo -e "Python-lxml :${GREEN}[OK]${NC}" 
+
+else
+echo -e "Python-lxml:${RED}[not installed!]${NC}"
+check_dep=0
+fi
+
+if [[ $check_requests == *"installed"* ]]; then
+echo -e "Python-requests:${GREEN}[OK]${NC}" 
+
+else
+echo -e "Python-requests:${RED}[not installed!]${NC}"
+check_dep=0
+fi
+
+
+	if [ "$check_dep" = 0 ]; then
 
 	   read -p "There are missing depencencies! Do you want to install dependencies Y/n " -n 1 -r
         	echo    
@@ -233,7 +245,14 @@ if [ "$run_install" = 1 ]; then
         #install dependencies
         	if [[ $REPLY =~ ^[Yy]$ ]]; then
                 sudo apt-get install python jq python-lxml python-requests
-        	fi
+        	
+		else
+		echo "one or more dependencies are not installed, installation of this script cannot continue. Run: sudo apt-get install python jq python-lxml python-requests"
+                echo "and reinstall the script with: sudo bash  presence_detection.sh install"
+		exit 1
+		fi 
+fi
+
 
 	fi
 
