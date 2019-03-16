@@ -10,7 +10,7 @@ making use of  fritzconnection  url: https://pypi.org/project/fritzconnection/
 dependencies: python lxml, jq and requests
 
 tested with: Fritzbox 7581 should work with all (fritzbox)routers who are supporting TR-064 protocol.
-works on debia linux only. 
+works on ubuntu. 
 
 Background information:
 Since i was not happy with the available presence detection scripts which are worked not very well with iPhone. I made a presence detection script using the TR-064 protocol of my Fritzbox router and get direct information of the router itself.
@@ -23,12 +23,12 @@ sending a request to the router, Get all the available WLAN devices and its stat
 Since I don't want to send to many requests to domoticz I compare the current state of domoticz with the state of de router. Are they similar? Then I do nothing. Are they different I update the switch state in domoticz
 
 When you have a Fritzbox Repeater. You should also add this to the script. The script will look for your devices on the fritzbox and on the repeater. 
-You can find the repeaters Ip adres by going to: http://fritz.repeater use the same password as logging in on your router. You can login to your router to go to http://fritz.box
+You can find thIfe repeaters Ip adres by going to: http://fritz.repeater use the same password as logging in on your router. You can login to your router to go to http://fritz.box
 
 Would be nice to have some feedback, maybe you can test this script on your own fritzbox. Maybe its also working on other routers wich are using the TR-064 protocol standard. feel free to let me know if it works
 
 -------------------------
-Installation instructions:
+###### Installation instructions:
 
 Make sure to give your devices a static ip in your router http://fritz.box Login, and go to Home network > network and then click on the device you want to use > click on pencil and check: Always assign this network device the same IPv4 address, we use this ip to target the devices in the script. 
 
@@ -46,27 +46,84 @@ sudo git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox
 6. A installer will appear fill in all the questions and at the end copy the line for your crontab. (run crontab with: crontab -e) 
 ------------------------
 
-That's it have fun!  
-------------------------
-If you want to re-install:
-run: sudo bash presence_detection.sh install 
+###### Frequently asked questions(FAQ)
 
-for debugging:
-run: sudo bash presence_detection.sh debug
 
-if you don't want to use sudo make the script executable with:
-sudo chmod +x presence_detection.sh 
-after that you can run the script with bash presence_detection.sh
+**1.How can i do fresh re-install?:**
 
-If you don't want that the script automatically creates dummy hardware and sensors inside domoticz you can do it manually:
+1. if you didn't, first delete old dummy device: go to domoticz > settings > hardware > delete dummy device presence_detection
+2. go to ssh 
+make a new directory for example test. move over to this directory 
+and run: 
 
-->Go to domoticz and make dummy hardware for your smartphones
+```
+sudo git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox
+```
+then reinstall the script with: 
+```
+sudo bash presence_detection.sh
+```
+you can also run to override : 
 
-settings > hardware > new > dummy give it a name for example smartphones
+```
+sudo bash presence_detection.sh install 
+```
+**2. The script is not working, status are not updated correctly, what can i do?**
+
+1. Check of all dependencies are installed run:  
+```
+sudo apt-get install python jq python-lxml python-requests
+```
+2. If its still not working check ip adresses and mac adresses of you devices inside config file. If there is no config file something is work, reinstall the script with: ```sudo bash presence_detection.sh install```  
+3. Check if there is a dummy hardware goto:
+```
+domoticz > settings> hardware >
+- check if "presence_detection" dummy hardware is available 
+```
+if there is no hardware with name presence_detection something went wrong: 
+```
+reinstall with: sudo bash presence_detection.sh install 
+```
+4.check if there is dummy devices named with the devices you make 
+```
+domoticz > settings > devices > click on tab hardware and look for presence_detection 
+-check if there are dummy devices set 
+```
+5.If its still nog working goto https://www.domoticz.com/forum/viewtopic.php?f=63&t=26599 or send me a pm (funky)
+
+**3. Sometimes the device status is set correctly and sometimes is isnt, what is happening?** 
+
+This happens when you have a repeater and your devices switches over to the repeater. Make sure there is a ip set
+in the config file for the repeater. If you havent have a repeater and this still occurs goto the domoticz forum and let me know. https://www.domoticz.com/forum/viewtopic.php?f=63&t=26599
+
+**4. I want to uninstall the script how can i do this?**
+
+1.first delete old dummy device: go to domoticz > settings > hardware > delete dummy device presence_detection
+2.Edit your crontab file and remove the line of the script
+3.remove the directory with the script 
+4.If you want to remove dependencies (look out if you're not sure if it used by something else) run:
+```
+sudo apt-get remove python jq python-lxml python-requests
+```
+**5.how can i add the dummy hardware manually?**
+goto domoticz > settings > hardware > new > dummy give it a name for example smartphones
 make as many virtual sensors as you want  by clicking on make virtual sensor
 give type: switch and give it a name
 after that go to devices
 and write down the IDX of all the devices.
+
+**5. I want do debugging the proces how can i do that? 
+
+for debugging:
+```run: sudo bash presence_detection.sh debug```
+
+**6. I want to make the script executable how can i do that?
+
+if you don't want to use sudo  make the script executable with:
+```sudo chmod +x presence_detection.sh``` 
+after that you can run the script with
+```bash presence_detection.sh```
+
 
 
 
