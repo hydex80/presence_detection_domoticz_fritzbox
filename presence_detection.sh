@@ -76,7 +76,7 @@ do
 
 	echo "checking:${device_names[i]}"
 	
-	status_domoticz_device=$(curl 'http://'$ip_domoticz'/json.htm?type=devices&rid='${device_idx[i]} | jq -r [.result][][].Data)   
+	status_domoticz_device=$(curl -s 'http://'$ip_domoticz'/json.htm?type=devices&rid='${device_idx[i]} | jq -r [.result][][].Data)   
 	status_fritzbox_device=$(python $cwd/fritzhosts.py -i $ip_fritzbox -p $pass_fritzbox -d ${device_macs[i]})
 
 	sleep 2; 
@@ -252,16 +252,6 @@ fi
 		exit 1
 		fi 
 fi
-
-
-	fi
-
-
-
-
-
-
-
 
 
 
