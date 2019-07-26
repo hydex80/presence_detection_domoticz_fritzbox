@@ -1,8 +1,9 @@
 #!/bin/bash
 
-#presence detection 2.2 Fritzbox by G.J Funcke
+#presence detection 2.3 Fritzbox by G.J Funcke
 #License: MIT https://opensource.org/licenses/MIT
 #Author: G.J. Funcke 
+#thnx to allesvanzelf for adding lighting protection 
 #Source: https://github.com/hydex80/presence_detection_domoticz_fritzbox
 
 #Making use: of fritzconnection 
@@ -32,7 +33,7 @@ echo "debug enabled"
 show_debug=1 
 clear;
 echo "------------------------------------------------------------"
-echo "Presence detection for Domoticz using Fritzbox version 2.2"
+echo "Presence detection for Domoticz using Fritzbox version 2.3"
 echo "------------------------------------------------------------"
 echo 
 
@@ -42,8 +43,6 @@ fi
 if [ ! -f $cwd/config.txt ] || [ "$1" = "install" ]; then
 run_install=1
 else
-
-
 
 # Load data.
 source $cwd/config.txt
@@ -59,12 +58,7 @@ read -p "Do you want to run presence_detection.sh install  Y/n " -n 1 -r
                 if [[ $REPLY =~ ^[Yy]$ ]]; then
                 sudo bash presence_detection.sh install 
                 fi
-
-
-
 exit 1
-
-
 fi
 
 i=0 
@@ -114,13 +108,13 @@ do
 		#router status vs domoticz status are not equal we set domoticz status to router status. 
 		#we change the value in domoticz
 		echo -e  $(date -u)"status router is not simular to status domoticz. ${GREEN} We change status domoticz for ${device_names[i]} to  $status_router_device${NC}"
-		wget -q --delete-after "http://$ip_domoticz/json.htm?type=command&param=switchlight&idx=${device_idx[i]}&switchcmd=$status_router_device" >/dev/null 2>&1
+
+##Added '&passcode=$domoticzpasscode' by Allesvanzelf
+		wget -q --delete-after "http://$ip_domoticz/json.htm?type=command&param=switchlight&idx=${device_idx[i]}&switchcmd=$status_router_device&passcode=$domoticzpasscode" >/dev/null 2>&1
 
 		#we send logging information to domoticz
 		wget -q --delete-after "http://$ip_domoticz/json.htm?type=command&param=addlogmessage&message=presence-detection-logging ${device_names[i]} = $status_router_device" >/dev/null 2>&1
- 
-	fi
-
+ 	fi
 
 #debug information:
 
@@ -154,20 +148,12 @@ echo "config file variables:"
 echo "---------------------"
 cat $cwd/config.txt
 echo "---------------------"
-
 fi
-
 
 # install script
 if [ "$run_install" = 1 ]; then
 
-	# This is a user friendly installer for presence detection fritzbox 2.2
-
-
-
-
-
-
+	# This is a user friendly installer for presence detection fritzbox 2.3
 
 	#variables
 	i="1"
@@ -175,14 +161,12 @@ if [ "$run_install" = 1 ]; then
 	device_mac=()
 	device_idx=()
 	echo "--------------------------------------------------------"
-	echo " Installer for fritzbox presence detection 2.2"
-	echo " before you continue make sure you made a virtual dummy in domoticz"
-	echo " in domoticz and write down the idx numbers of the devices" 
+	echo " Installer for fritzbox presence detection 2.3" 
 	echo "--------------------------------------------------------"
 	#check if config file exist.
 	if [ -f  $cwd/config.txt ]; then
 
-	read -p "We found an existing config file, this file  will be overwritten are you sure? Y/n " -n 1 -r
+	read -p "We found an existing config file, this file will be overwritten are you sure? Y/n " -n 1 -r
                 echo    
 
         #
@@ -195,12 +179,10 @@ if [ "$run_install" = 1 ]; then
 	fi
 	fi
 
-
 check_jq=$(dpkg-query -W -f='${Status} ${Version}\n' jq)
 check_python=$(dpkg-query -W -f='${Status} ${Version}\n' python)
 check_lxml=$(dpkg-query -W -f='${Status} ${Version}\n' python-lxml)
 check_requests=$(dpkg-query -W -f='${Status} ${Version}\n' python-requests)
-
 
 
 if [[ $check_jq == *"installed"* ]]; then
@@ -236,10 +218,9 @@ echo -e "Python-requests:${RED}[not installed!]${NC}"
 check_dep=0
 fi
 
-
 	if [ "$check_dep" = 0 ]; then
 
-	   read -p "There are missing depencencies! Do you want to install dependencies Y/n " -n 1 -r
+	   read -p "There are missing dependencies! Do you want to install dependencies Y/n " -n 1 -r
         	echo    
 
         #install dependencies
@@ -254,10 +235,9 @@ fi
 fi
 
 
-
 	#questions for config file 
 	echo  
-	echo -n "Enter ip adres of fritzbox default:192.168.178.1  and press [ENTER]: "
+	echo -n "Enter ip adres of fritzbox and press [ENTER]: "
 	read ip_fritzbox 
 	echo "ip_fritzbox=$ip_fritzbox" >> config.txt
 	echo -n "Enter password of fritzbox (web interface password) and press [ENTER]: "
@@ -269,6 +249,10 @@ fi
 	echo -n "Enter ip adres of domoticz including port default: 127.0.0.1:8080 and press [ENTER]: "
 	read ip_domoticz 
 	echo "ip_domoticz=$ip_domoticz" >> config.txt
+	## added by Allesvanzelf	
+	echo -n "Enter the Light/Switch protection passcode if you any in domoticz, if you don't have any leave blank and press[ENTER]: "
+	read domoticzpasscode
+	echo "domoticzpasscode=$domoticzpasscode" >> config.txt
 
 
 	#check status domoticz
@@ -377,7 +361,10 @@ fi
     	sudo bash presence_detection.sh
 	fi
 echo
-echo "Installation is complete" 
-echo "you can add:  * * * * * $cwd/presence_detection.sh to your crontab " 
+echo "Installation is complete"
+echo "You have to add the script to your crontab so it will check every minute if devices are on your network." 
+echo "you can do this to  add this line :  * * * * * $cwd/presence_detection.sh  to your crontab. "
+echo "all the settings are written inside the config.txt file. If you want to change anything you can also change the settings inside this file." 
+echo "Good luck, if you are happy or if you have any comments please goto the domoticz forum. or send (me) funky a PM "
 fi
 
