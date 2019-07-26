@@ -2,8 +2,8 @@ presence_detection.sh
 
 # Presence detection domoticz for fritzbox routers
 
-script Presence detection for domoticz  & Fritzbox v2.2
-created by g.j funcke - 16  mar 2019
+script Presence detection for domoticz  & Fritzbox v2.3
+created by g.j funcke - 26  jul 2019
 
 making use of  fritzconnection  url: https://pypi.org/project/fritzconnection/
 
@@ -141,7 +141,7 @@ sudo git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox
 ```
 3. restore the config file inside the map and you're up and running again. 
 
-
-
+**11. I get an config is corrupt message**
+The config is corrupt message appears when you dont enter a value within the install script. Re-run the install script and enter all values. 
 
 
