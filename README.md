@@ -80,21 +80,26 @@ sudo apt-get install python jq python-lxml python-requests
 domoticz > settings> hardware >
 - check if "presence_detection" dummy hardware is available 
 ```
-if there is no hardware with name presence_detection something went wrong: 
+if there is no hardware with name presence_detection something went wrong 
+4.check if password of domoticz is set correctly inside config.txt file: 
 ```
 reinstall with: sudo bash presence_detection.sh install 
 ```
-4.check if there is dummy devices named with the devices you make 
+5.check if there is dummy devices named with the devices you make 
 ```
 domoticz > settings > devices > click on tab hardware and look for presence_detection 
 -check if there are dummy devices set 
 ```
-5.If its still nog working goto https://www.domoticz.com/forum/viewtopic.php?f=63&t=26599 or send me a pm (funky)
+6.If its still nog working goto https://www.domoticz.com/forum/viewtopic.php?f=63&t=26599 or send me a pm (funky)
+
+Or add the dummy hardware manually see step 5.
 
 **3. Sometimes the device status is set correctly and sometimes is isnt, what is happening?** 
 
 This happens when you have a repeater and your devices switches over to the repeater. Make sure there is a ip set
 in the config file for the repeater. If you havent have a repeater and this still occurs goto the domoticz forum and let me know. https://www.domoticz.com/forum/viewtopic.php?f=63&t=26599
+**3a. Still didn't got it working:**
+run: sudo bash presence_detection.sh debug and see what happens. are there any errors? 
 
 **4. I want to uninstall the script how can i do this?**
 
@@ -111,6 +116,8 @@ make as many virtual sensors as you want  by clicking on make virtual sensor
 give type: switch and give it a name
 after that go to devices
 and write down the IDX of all the devices.
+Add them to the config.txt file. (sudo nano config.txt) 
+seperate the (multiple) devices with a space like: device_idx=(493 494)
 
 **6. I want do debugging the proces how can i do that?** 
 
@@ -143,5 +150,6 @@ sudo git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox
 
 **11. I get an config is corrupt message**
 The config is corrupt message appears when you dont enter a value within the install script. Re-run the install script and enter all values. 
+
 
 
