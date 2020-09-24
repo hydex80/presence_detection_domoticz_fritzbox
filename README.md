@@ -30,7 +30,7 @@ Would be nice to have some feedback, maybe you can test this script on your own 
 -------------------------
 # Installation instructions:
 
-Make sure to give your devices a static ip in your router http://fritz.box Login, and go to Home network > network and then click on the device you want to use > click on pencil and check: Always assign this network device the same IPv4 address, we use this ip to target the devices in the script. 
+Make sure to give your devices including your fritzbox repeater (if you have any) a static ip in your router http://fritz.box Login, and go to Home network > network and then click on the device you want to use > click on pencil and check: Always assign this network device the same IPv4 address, we use this ip to target the devices in the script. 
 
 1. Activate on your router the TR-064 protocol on fritzbox it is in >home network > network > network settings > Allow access for applications 
 
