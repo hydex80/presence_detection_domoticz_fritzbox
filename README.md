@@ -32,18 +32,22 @@ Would be nice to have some feedback, maybe you can test this script on your own 
 
 Make sure to give your devices including your fritzbox repeater (if you have any) a static ip in your router http://fritz.box Login, and go to Home network > network and then click on the device you want to use > click on pencil and check: Always assign this network device the same IPv4 address, we use this ip to target the devices in the script. 
 
-1. Activate on your router the TR-064 protocol on fritzbox it is in >home network > network > network settings > Allow access for applications 
 
-2. Download script:
+
+1. Make sure to give your devices including your fritzbox repeater (if you have any) a static ip in your router http://fritz.box Login, and go to Home network > network and then click on the device you want to use > click on pencil and check: Always assign this network device the same IPv4 address, we use this ip to target the devices in the script. If you have a iphone/ipad with iOS14 or higher installed, please check out the option private adress in your  wifi settings (go to general -> settings> wifi > select current wifi adress > deselect private adress. 
+
+2. Activate on your router the TR-064 protocol on fritzbox it is in >home network > network > network settings > Allow access for applications 
+
+3. Download script:
 ```sudo git clone https://github.com/hydex80/presence_detection_domoticz_fritzbox```
 
-3. Write down the ip adres of your router and of your repeater (if you have any)
+4. Write down the ip adres of your router and of your repeater (if you have any)
 
-4. Write down the mac adresses of your devices you want to monitor. 
+5. Write down the mac adresses of your devices you want to monitor. 
 
-5. Run the script with: ```sudo bash presence_detection.sh``` 
+6. Run the script with: ```sudo bash presence_detection.sh``` 
 
-6. A installer will appear fill in all the questions and at the end copy the line for your crontab. (run crontab with: crontab -e) 
+7. A installer will appear fill in all the questions and at the end copy the line for your crontab. (run crontab with: crontab -e) 
 ------------------------
 
 # Frequently asked questions(FAQ)
