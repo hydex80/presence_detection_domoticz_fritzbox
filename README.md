@@ -51,14 +51,12 @@ Make sure to give your devices including your fritzbox repeater (if you have any
 ------------------------
 
 # Frequently asked questions(FAQ)
-**Since iOS14 the script is not working. Because of Mac adress randomization.**
+**Since iOS14 and newer updates on Android the script is not working. Because of Mac adress randomization.**
 
-For privacy reasons. Apple and google are randomize your mac adress so public services can not tracking you when you are shopping or walking by.
-Since the presence detections only works within your home network this has no function for privacy. (unless you have something to hide for your roommates ;-)  You can disable for your home network mac adress randomization by: 
+For privacy reasons. Apple and Google are randomize your mac adress so public services can not tracking you when you are shopping or walking by.
+Since the presence detections only works within your home network this has no function for privacy. (unless you have something to hide for your roommates ;-)  
 
-You can disable it for a certain network.
-
-To Disable MAC Randomization in Android 10 & Apple iOS, complete the steps below:
+You can disable it for a certain network. On other networks the randomization continues. 
 
 Apple iOS 14 & Later:
 Ensure your device is connected to a Wi--Fi Network
