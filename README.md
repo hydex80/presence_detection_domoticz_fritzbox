@@ -59,33 +59,33 @@ Since the presence detections only works within your home network this has no fu
 You can disable it for a certain network. On other networks the randomization continues. 
 
 Apple iOS 14 & Later:
-Ensure your device is connected to a Wi--Fi Network
-Open the "Settings app", then tap "Wi-Fi"
-Tap the "information button" next to your Plume network
-Tap on the "Use private Address" toggle to turn it off
-After, a privacy warning will pop-up
+- Ensure your device is connected to your home Wi--Fi Network
+- Open the "Settings app", then tap "Wi-Fi"
+- Tap the "information button" next to your Plume network
+- Tap on the "Use private Address" toggle to turn it off
+- After, a privacy warning will pop-up
 
 
 Google Pixel / Motorola / Other Androids:
-Open the Settings app
-Select Network and Internet
-Select WiFi
-Connect to the Wireless network
-Tap the gear icon next to the current connection
-Select Advanced
-Select Privacy
-Select "Use device MAC"
+- Open the Settings app
+- Select Network and Internet
+- Select WiFi
+- Connect to the Wireless network
+- Tap the gear icon next to the current connection
+- Select Advanced
+- Select Privacy
+- Select "Use device MAC"
 
 Samsung Galaxy:
-Navigate to "Settings"
-Select "Connections"
-Select "WiFi"
-Select "the Wireless Network you wish to connect to"
-Tap the gear shaped icon next to the network you connected to
-Select "Advanced"
-On the next screen there is a menu labeled "MAC Address Type".
-Tap on "MAC Address Type"
-Select “Use Phone/Device MAC”
+- Navigate to "Settings"
+- Select "Connections"
+- Select "WiFi"
+- Select "the Wireless Network you wish to connect to"
+- Tap the gear shaped icon next to the network you connected to
+- Select "Advanced"
+- On the next screen there is a menu labeled "MAC Address Type".
+- Tap on "MAC Address Type"
+- Select “Use Phone/Device MAC”
 
 **1.How can i do fresh re-install?:**
 
