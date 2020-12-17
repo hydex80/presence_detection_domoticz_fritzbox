@@ -51,7 +51,43 @@ Make sure to give your devices including your fritzbox repeater (if you have any
 ------------------------
 
 # Frequently asked questions(FAQ)
+**Since iOS14 the script is not working. Because of Mac adress randomization.**
 
+For privacy reasons. Apple and google are randomize your mac adress so public services can not tracking you when you are shopping or walking by.
+Since the presence detections only works within your home network this has no function for privacy. (unless you have something to hide for your roommates ;-)  You can disable for your home network mac adress randomization by: 
+
+You can disable it for a certain network.
+
+To Disable MAC Randomization in Android 10 & Apple iOS, complete the steps below:
+
+Apple iOS 14 & Later:
+Ensure your device is connected to a Wi--Fi Network
+Open the "Settings app", then tap "Wi-Fi"
+Tap the "information button" next to your Plume network
+Tap on the "Use private Address" toggle to turn it off
+After, a privacy warning will pop-up
+
+
+Google Pixel / Motorola / Other Androids:
+Open the Settings app
+Select Network and Internet
+Select WiFi
+Connect to the Wireless network
+Tap the gear icon next to the current connection
+Select Advanced
+Select Privacy
+Select "Use device MAC"
+
+Samsung Galaxy:
+Navigate to "Settings"
+Select "Connections"
+Select "WiFi"
+Select "the Wireless Network you wish to connect to"
+Tap the gear shaped icon next to the network you connected to
+Select "Advanced"
+On the next screen there is a menu labeled "MAC Address Type".
+Tap on "MAC Address Type"
+Select “Use Phone/Device MAC”
 
 **1.How can i do fresh re-install?:**
 
