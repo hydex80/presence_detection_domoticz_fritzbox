@@ -2,8 +2,8 @@ presence_detection.sh
 
 # Presence detection domoticz for fritzbox routers
 
-script Presence detection for domoticz  & Fritzbox v2.3
-created by g.j funcke - 26  jul 2019
+script Presence detection for domoticz  & Fritzbox v2.4
+created by g.j funcke - 18 december 2020
 
 making use of  fritzconnection  url: https://pypi.org/project/fritzconnection/
 
@@ -128,7 +128,9 @@ reinstall with: sudo bash presence_detection.sh install
 domoticz > settings > devices > click on tab hardware and look for presence_detection 
 -check if there are dummy devices set 
 ```
-6.If its still nog working goto https://www.domoticz.com/forum/viewtopic.php?f=63&t=26599 or send me a pm (funky)
+6. The fritzbox has a delay of 30 seconds. Try after 30 seconds again to run the script 
+
+7.If its still nog working goto https://www.domoticz.com/forum/viewtopic.php?f=63&t=26599 or send me a pm (funky)
 
 Or add the dummy hardware manually see step 5.
 
