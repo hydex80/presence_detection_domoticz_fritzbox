@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#presence detection 2.3 Fritzbox by G.J Funcke
+#presence detection 2.4 Fritzbox by G.J Funcke
 #License: MIT https://opensource.org/licenses/MIT
 #Author: G.J. Funcke 
 #thnx to allesvanzelf for adding lighting protection 
@@ -18,6 +18,8 @@
 #default variables
 run_install=0
 show_debug=0
+# delaytime is in seconds. Its the time between the checks for new fritzdevices. 
+delaytime=2
 
 #current directory script
 cwd=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
@@ -33,73 +35,73 @@ echo "debug enabled"
 show_debug=1 
 clear;
 echo "------------------------------------------------------------"
-echo "Presence detection for Domoticz using Fritzbox version 2.3"
+echo "Presence detection for Domoticz using Fritzbox version 2.4"
 echo "------------------------------------------------------------"
 echo 
 
 
 fi
 #check if config file exist.
-if [ ! -f $cwd/config.txt ] || [ "$1" = "install" ]; then
-run_install=1
-else
+	if [ ! -f $cwd/config.txt ] || [ "$1" = "install" ]; then
+	run_install=1
+	else
 
-# Load data.
-source $cwd/config.txt
+	# Load data.
+	source $cwd/config.txt
 
-#check if all variables are set 
-if [[ -z $ip_fritzbox || -z $pass_fritzbox || -z $ip_domoticz || -z $device_names || -z $device_macs || -z $device_idx  ]]; then
-echo "The config file is corrupt!"
-config_file=1;
-read -p "Do you want to run presence_detection.sh install  Y/n " -n 1 -r
-                echo    
+	#check if all variables are set 
+	if [[ -z $fritzdevice_names || -z $fritzdevice_ips || -z $ip_domoticz || -z $device_names || -z $device_macs || -z $device_idx  ]]; then
+	echo "The config file is corrupt!"
+	config_file=1;
+	read -p "Do you want to run presence_detection.sh install  Y/n " -n 1 -r
+    echo    
  		
-		#install dependencies
-                if [[ $REPLY =~ ^[Yy]$ ]]; then
-                sudo bash presence_detection.sh install 
-                fi
+	#install dependencies
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        sudo bash presence_detection.sh install 
+    fi
 exit 1
 fi
 
 i=0 
-  
 # Loop upto size of array 
 # st 
+output_router_device=()
 while [ $i -lt ${#device_names[@]} ] 
 do
 
-	echo "checking:${device_names[i]}"
+	echo "checking device:${device_names[i]}"
 	
+	x=0
+	status_device=0
+
+	while [ $x -lt ${#fritzdevice_ips[@]} ] 	
+	do
+	echo "checking fritz device:${fritzdevice_names[x]} on ${fritzdevice_ips[x]} "
 	status_domoticz_device=$(curl -s 'http://'$ip_domoticz'/json.htm?type=devices&rid='${device_idx[i]} | jq -r [.result][][].Data)   
-	status_fritzbox_device=$(python $cwd/fritzhosts.py -i $ip_fritzbox -p $pass_fritzbox -d ${device_macs[i]})
+	status_fritzbox_device=$(python $cwd/fritzhosts.py -i ${fritzdevice_ips[x]} -p $pass_fritzbox -d ${device_macs[i]})
+	
+	#remove all spaces from values fritzboxconnection 
+	status_fritzbox_device=$(echo $status_fritzbox_device | tr -d ' ')
+	sleep $delaytime; 
+	
+		if [[ "$status_fritzbox_device" = *NewActive:1* ]];then
+		status_device=1
+		echo "${device_names[i]} found in ${fritzdevice_ips[x]}!"
+		break
+		fi
 
-	sleep 2; 
-	output_router_device=$(grep "NewActive              : 1" <<<"$status_fritzbox_device")  
-	if [ -n "$ip_repeater" ]; then
-		status_repeater_device=$(python $cwd/fritzhosts.py -i $ip_repeater -p $pass_fritzbox -d ${device_macs[i]})
-		sleep 2;
-		output_repeater_device=$(grep "NewActive              : 1" <<<"$status_repeater_device")  
+	
+	x=`expr $x + 1` 
+	done
 
- 		if [ -z "$output_router_device" ] && [ -z "$output_repeater_device" ]; then
-        		# device is not active in router and not active in repeater  so set it to off
-        		status_router_device="Off" 
-        	else
-        		#device is active so we set variable to on
-        
-       			 status_router_device="On"
- 		fi
-
-	#else if there is no repeater 
-	else
-        	if [ -z "$output_router_device" ];then
-        		# device is not active in router and not active in repeater  so set it to off
-        		status_router_device="Off" 
-        	else
-        		#device is active so we set variable to on
-           
-        		status_router_device="On"
-        	fi
-	fi
+	if [ "$status_device" = 1 ];then 
+    #device is active so we set variable to on
+    status_router_device="On"
+    else
+    #device is  not active so we set variable to off
+    status_router_device="Off"
+    fi
 
 	if [ "$status_router_device" == "$status_domoticz_device" ]; then
 		# both are simular so there is nothing to change. 
@@ -131,7 +133,6 @@ do
 	echo "-----------------------"
 	fi
 
-
 	i=`expr $i + 1` 
 done
 fi
@@ -153,19 +154,24 @@ fi
 # install script
 if [ "$run_install" = 1 ]; then
 
-	# This is a user friendly installer for presence detection fritzbox 2.3
+	# This is a user friendly installer for presence detection fritzbox 2.4
 
 	#variables
 	i="1"
 	device_name=()
 	device_mac=()
 	device_idx=()
+	fritzdevice_name=()
+	fritzdevice_ip=()
 	echo "--------------------------------------------------------"
-	echo " Installer for fritzbox presence detection 2.3" 
+	echo " Installer for fritzbox presence detection 2.4" 
 	echo "--------------------------------------------------------"
 	#check if config file exist.
 	if [ -f  $cwd/config.txt ]; then
-
+	echo "Found! config file:"    
+	echo "---------------------"
+	cat $cwd/config.txt
+	echo "---------------------"
 	read -p "We found an existing config file, this file will be overwritten are you sure? Y/n " -n 1 -r
                 echo    
 
@@ -183,7 +189,7 @@ check_jq=$(dpkg-query -W -f='${Status} ${Version}\n' jq)
 check_python=$(dpkg-query -W -f='${Status} ${Version}\n' python)
 check_lxml=$(dpkg-query -W -f='${Status} ${Version}\n' python-lxml)
 check_requests=$(dpkg-query -W -f='${Status} ${Version}\n' python-requests)
-
+get_gateway=$(route -n | grep 'UG[ \t]' | awk '{print $2}')
 
 if [[ $check_jq == *"installed"* ]]; then
 echo -e "JQ:${GREEN}[OK]${NC}" 
@@ -229,23 +235,52 @@ fi
         	
 		else
 		echo "one or more dependencies are not installed, installation of this script cannot continue. Run: sudo apt-get install python jq python-lxml python-requests"
-                echo "and reinstall the script with: sudo bash  presence_detection.sh install"
+        echo "and reinstall the script with: sudo bash  presence_detection.sh install"
 		exit 1
 		fi 
 fi
 
 
 	#questions for config file 
-	echo  
-	echo -n "Enter ip adres of fritzbox and press [ENTER]: "
-	read ip_fritzbox 
-	echo "ip_fritzbox=$ip_fritzbox" >> config.txt
+	     
 	echo -n "Enter password of fritzbox (web interface password) and press [ENTER]: "
 	read pass_fritzbox
 	echo "pass_fritzbox=$pass_fritzbox" >> config.txt
-	echo -n "Enter ip adres of fritz repeater (leave blank if you dont have any)  and press [ENTER]: "
-	read ip_repeater
-	echo "ip_repeater=$ip_repeater" >> config.txt
+	#added new code
+	echo -n "Enter number of fritz devices you want to add and press [ENTER]: "
+        read number_of_repeaters
+	echo -e "Found router (possibly fritzbox) on: $get_gateway" 
+        number_of_repeaters=$((number_of_repeaters+1))
+        while [ $i -lt $number_of_repeaters ]
+        do
+
+                #add value of repeater ip to ip_repeater
+		echo -n "Enter ip adress  of Fritz device$i and press [ENTER]:" 
+                read ip_repeater
+
+                #add values to array fritzdevice_name
+                fritzdevice_name+=("fritz_device$i")
+                #add values to array repeater_id
+                fritzdevice_ip+=("$ip_repeater") 
+
+        i=$[$i+1] 
+        done
+
+
+        # save fritzdevice_name  values inside configfile
+        for dn in "${fritzdevice_name[*]}"
+        do      
+                 echo "fritzdevice_names=($dn)" 
+		done >>config.txt
+
+        # save repeater_id values inside configfile
+        for dn in "${fritzdevice_ip[*]}"
+        do
+                 echo "fritzdevice_ips=($dn)" 
+        done >>config.txt
+
+	# end added new code
+	
 	echo -n "Enter ip adres of domoticz including port default: 127.0.0.1:8080 and press [ENTER]: "
 	read ip_domoticz 
 	echo "ip_domoticz=$ip_domoticz" >> config.txt
@@ -260,7 +295,7 @@ fi
 
 	if [ -z $status_domoticz ]; then
 
-	echo  "there is a problem retrieving information of  domoticz, Restart install script and  check domoticz ip settings or check if domoticz is offline"
+	echo -e  ${RED}"There is a problem retrieving information of domoticz, Restart install script and  check domoticz ip settings or check if domoticz is offline ${NC}"
 	exit 1 
 
 	else
@@ -284,15 +319,13 @@ fi
                         else
                         echo -e "Virtual hardware Presence_detection (IDX: $idx_virtual_hardware) added to domoticz ${GREEN}[OK]${NC}"
                         fi
+				else
+				create_auto=0;
+				fi
 
-		fi
-
-
-
-
-	echo -n "Enter number of devices you want to add  and press [ENTER]: "
+	echo -n "Enter number of devices you want to monitor and press [ENTER]:"
 	read number_of_devices
-
+	i=1
 	number_of_devices=$((number_of_devices+1))
 	while [ $i -lt $number_of_devices ]
 	do
@@ -355,9 +388,10 @@ fi
 	done >>config.txt
 
 	# run presence detection straight away
-	read -p "Do you want to run  presence detection  Y/n " -n 1 -r
+	read -p "Do you want to run presence detection  Y/n " -n 1 -r
 
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
+	printf "\033c"
     	sudo bash presence_detection.sh
 	fi
 echo
@@ -365,6 +399,8 @@ echo "Installation is complete"
 echo "You have to add the script to your crontab so it will check every minute if devices are on your network." 
 echo "you can do this to  add this line :  * * * * * $cwd/presence_detection.sh  to your crontab. "
 echo "all the settings are written inside the config.txt file. If you want to change anything you can also change the settings inside this file." 
-echo "Good luck, if you are happy or if you have any comments please goto the domoticz forum. or send (me) funky a PM "
+echo "Don't forget to disable wifi security on your devices on your home network wifi  "
+echo "More Questions and answers can be found on: https://github.com/hydex80/presence_detection_domoticz_fritzbox"
+echo "Good luck, if you are happy or if you have any comments please goto the domoticz forum. or send (me) funky a PM"
 fi
 
