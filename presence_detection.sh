@@ -247,7 +247,7 @@ fi
 	read pass_fritzbox
 	echo "pass_fritzbox=$pass_fritzbox" >> config.txt
 	#added new code
-	echo -n "Enter number of fritz devices you want to add and press [ENTER]: "
+	echo -n "Enter number of fritz devices (not phones) you want to add and press [ENTER]: "
         read number_of_repeaters
 	echo -e "Found router (possibly fritzbox) on: $get_gateway" 
         number_of_repeaters=$((number_of_repeaters+1))
