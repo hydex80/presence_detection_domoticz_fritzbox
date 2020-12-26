@@ -28,7 +28,7 @@ You can find thIfe repeaters Ip adres by going to: http://fritz.repeater use the
 Would be nice to have some feedback, maybe you can test this script on your own fritzbox. Maybe its also working on other routers wich are using the TR-064 protocol standard. feel free to let me know if it works
 
 -------------------------
-# Installation instructions:
+# Installation instructions for raspberry pi or other linux standalone device:
 
 Make sure to give your devices including your fritzbox repeater (if you have any) a static ip in your router http://fritz.box Login, and go to Home network > network and then click on the device you want to use > click on pencil and check: Always assign this network device the same IPv4 address, we use this ip to target the devices in the script. 
 
@@ -49,6 +49,23 @@ Make sure to give your devices including your fritzbox repeater (if you have any
 
 7. A installer will appear fill in all the questions and at the end copy the line for your crontab. (run crontab with: crontab -e) 
 ------------------------
+# Installation instructions for SYNOLOGY only. (thnx Kubra)
+
+1. Create a directory (eg "presence_detection" in @appstore)
+2. Place the 4 files from the downloaded zip file in the previously created folder
+3. DO NOT execute the command "sudo bash presence_detection.sh" (with or without "install" supplemented), but ...
+4.Create a config.txt file with the following content (leave out help text after #) in the folder and adjust it to your situation:
+5. pass_fritzbox = xxxxxxx # enter the password of your fritzbox here
+fritzdevice_names = (fritz_device1 fritz_device2) #in parentheses here number of repeaters, in my case 2)
+fritzdevice_ips = (XXX.XXX.XXX.XXX XXX.XXX.XXX.XXX) #Enter ip addresses of your repeaters
+ip_domoticz = xxx.xxx.xxx.xx: xxxx #ip address of domoticz + port
+domoticzpasscode = xxxxxxxxxxxxxx #eg. pwd domoticz
+device_names = (phone_1 etc.) # create manually the virtual devices in domoticz as described on git
+device_macs = (XX: XX: XX: XX: XX: XX etc.) # the corresponding mac addresses of the devices above
+device_idx = (XXX etc.) # and enter the idx of the devices here
+6. You can now run the script in debug once (eg in Putty using "sudo bash presence_detection.sh debug" to check if it works properly. If so, go to the next step to make it run automatically.
+7. Create a task on your Synology to run the script every minute. Job to be executed ("Job settings" tab) becomes
+"sh /volume1/@appstore/presence_detection/presence_detection.sh" (path name to the script depends on your situation)
 
 # Frequently asked questions(FAQ)
 **Since iOS14 and newer updates on Android the script is not working. Because of Mac adress randomization.**
