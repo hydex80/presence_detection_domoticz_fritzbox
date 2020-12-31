@@ -371,6 +371,9 @@ fi
 	fi
 echo
 echo "Installation is complete"
+echo "Note! Depending on how many devices are on the network it can take up to 10 minutes before you see a status change"
+echo "Please be patient wait a couple of minutes and try again if you see no changes."
+echo ""
 echo "You have to add the script to your crontab so it will check every minute if devices are on your network." 
 echo "you can do this to  add this line so it runs every minute :  * * * * * $cwd/presence_detection.sh  to your crontab. "
 echo "all the settings are written inside the config.txt file. If you want to change anything you can also change the settings inside this file." 
