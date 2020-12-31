@@ -367,7 +367,7 @@ fi
 
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 	printf "\033c"
-    	sudo bash presence_detection.sh
+    	sudo bash presence_detection.sh debug
 	fi
 echo
 echo "Installation is complete"
