@@ -151,7 +151,8 @@ echo "Overview of status Fritbox vs Domotics"
 echo "----------------------------------------------------------------------------------" 
 printf '%s %s %s %s %s\n' "${devices_output[@]}" | column -t
 echo "----------------------------------------------------------------------------------" 
-
+echo "Note! Depending on how many devices are on the network it can take up to 10 minutes before you see a status change"
+echo "Please be patient wait a couple of minutes and try again if you see no changes."
 fi
 
 # install script
