@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#presence detection 2.4 Fritzbox by G.J Funcke
+#presence detection 2.5 Fritzbox by G.J Funcke
 #License: MIT https://opensource.org/licenses/MIT
 #Author: G.J. Funcke 
 #thnx to allesvanzelf for adding lighting protection 
@@ -15,11 +15,16 @@
 #Run  presence_detection.sh debug to enable debugging
 #run  presence_detection.sh to just start the main functionality 
 
+
 #default variables
 run_install=0
 show_debug=0
 # delaytime is in seconds. Its the time between the checks for new fritzdevices. 
-delaytime=2
+delaytime=0 
+
+#working variables do not change
+devices_output=(Device MAC_address Fritzbox_status Domoticz_status New_status)
+output_router_device=()
 
 #current directory script
 cwd=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
@@ -35,7 +40,7 @@ echo "debug enabled"
 show_debug=1 
 clear;
 echo "------------------------------------------------------------"
-echo "Presence detection for Domoticz using Fritzbox version 2.4"
+echo "Presence detection for Domoticz using Fritzbox version 2.5"
 echo "------------------------------------------------------------"
 echo 
 
@@ -50,7 +55,7 @@ fi
 	source $cwd/config.txt
 
 	#check if all variables are set 
-	if [[ -z $fritzdevice_names || -z $fritzdevice_ips || -z $ip_domoticz || -z $device_names || -z $device_macs || -z $device_idx  ]]; then
+	if [[ -z $ip_fritzbox || -z $ip_domoticz || -z $device_names || -z $device_macs || -z $device_idx  ]]; then
 	echo "The config file is corrupt!"
 	config_file=1;
 	read -p "Do you want to run presence_detection.sh install  Y/n " -n 1 -r
@@ -64,36 +69,37 @@ exit 1
 fi
 
 i=0 
-# Loop upto size of array 
-# st 
-output_router_device=()
+
+# load all data from fritzbox inside status_fritzbox so we can loop trough 
+echo "reading devices from fritzbox on $ip_fritzbox"
+status_fritzbox_device=$(python $cwd/fritzhosts.py -i $ip_fritzbox -p $pass_fritzbox)
 while [ $i -lt ${#device_names[@]} ] 
 do
+	#Load data for later output
+	devices_output+=(${device_names[i]})
+	devices_output+=(${device_macs[i]})
+
 
 	echo "checking device:${device_names[i]}"
 	
 	x=0
 	status_device=0
-
-	while [ $x -lt ${#fritzdevice_ips[@]} ] 	
-	do
-	echo "checking fritz device:${fritzdevice_names[x]} on ${fritzdevice_ips[x]} "
-	status_domoticz_device=$(curl -s 'http://'$ip_domoticz'/json.htm?type=devices&rid='${device_idx[i]} | jq -r [.result][][].Data)   
-	status_fritzbox_device=$(python $cwd/fritzhosts.py -i ${fritzdevice_ips[x]} -p $pass_fritzbox -d ${device_macs[i]})
-	
+		
 	#remove all spaces from values fritzboxconnection 
 	status_fritzbox_device=$(echo $status_fritzbox_device | tr -d ' ')
-	sleep $delaytime; 
-	
-		if [[ "$status_fritzbox_device" = *NewActive:1* ]];then
+	status_device_mac="${device_macs[i]}active"
+
+		if [[ "$status_fritzbox_device" == *"$status_device_mac"* ]]; then
 		status_device=1
-		echo "${device_names[i]} found in ${fritzdevice_ips[x]}!"
-		break
+		devices_output+=(Active)
+		else
+		devices_output+=(-)
 		fi
 
-	
-	x=`expr $x + 1` 
-	done
+	#loading status from domoticz
+	status_domoticz_device=$(curl -s 'http://'$ip_domoticz'/json.htm?type=devices&rid='${device_idx[i]} | jq -r [.result][][].Data)   
+	devices_output+=($status_domoticz_device)
+
 
 	if [ "$status_device" = 1 ];then 
     #device is active so we set variable to on
@@ -106,11 +112,12 @@ do
 	if [ "$status_router_device" == "$status_domoticz_device" ]; then
 		# both are simular so there is nothing to change. 
 		echo $(date -u) "status router and domoticz for ${device_names[i]} are simular, we do nothing"  
+		devices_output+=(-)
 	else
 		#router status vs domoticz status are not equal we set domoticz status to router status. 
 		#we change the value in domoticz
 		echo -e  $(date -u)"status router is not simular to status domoticz. ${GREEN} We change status domoticz for ${device_names[i]} to  $status_router_device${NC}"
-
+		devices_output+=($status_router_device)
 ##Added '&passcode=$domoticzpasscode' by Allesvanzelf
 		wget -q --delete-after "http://$ip_domoticz/json.htm?type=command&param=switchlight&idx=${device_idx[i]}&switchcmd=$status_router_device&passcode=$domoticzpasscode" >/dev/null 2>&1
 
@@ -120,24 +127,20 @@ do
 
 #debug information:
 
-	if [ "$show_debug" = 1 ]; then
-	echo "debug information:" 
-	echo "status domoticz:"
-	echo "$status_domoticz_device"
-	echo "-----------------------"
-	echo "status fritzbox:"
-	echo "$status_fritzbox_device"
-	echo "-----------------------"
-	echo "status repeater:"
-	echo "$status_repeater_device"
-	echo "-----------------------"
-	fi
 
 	i=`expr $i + 1` 
 done
 fi
 
 if [ "$show_debug" = 1 ]; then
+
+#print all devices into columns 
+echo ""
+echo "Overview of status Fritbox vs Domotics"
+echo "----------------------------------------------------------------------------------" 
+printf '%s %s %s %s %s\n' "${devices_output[@]}" | column -t
+echo "----------------------------------------------------------------------------------" 
+
 echo "dependencies installed:" 
 echo "installed python version:" 
 python --version
@@ -161,10 +164,8 @@ if [ "$run_install" = 1 ]; then
 	device_name=()
 	device_mac=()
 	device_idx=()
-	fritzdevice_name=()
-	fritzdevice_ip=()
 	echo "--------------------------------------------------------"
-	echo " Installer for fritzbox presence detection 2.4" 
+	echo " Installer for fritzbox presence detection 2.5" 
 	echo "--------------------------------------------------------"
 	#check if config file exist.
 	if [ -f  $cwd/config.txt ]; then
@@ -246,41 +247,12 @@ fi
 	echo -n "Enter password of fritzbox (web interface password) and press [ENTER]: "
 	read pass_fritzbox
 	echo "pass_fritzbox=$pass_fritzbox" >> config.txt
-	#added new code
-	echo -n "Enter number of fritz devices (not phones) you want to add and press [ENTER]: "
-        read number_of_repeaters
+
 	echo -e "Found router (possibly fritzbox) on: $get_gateway" 
-        number_of_repeaters=$((number_of_repeaters+1))
-        while [ $i -lt $number_of_repeaters ]
-        do
+	echo -n "Enter ip adress  of Fritzbox and press [ENTER]:" 
+    read ip_fritzbox
+	echo "ip_fritzbox=$ip_fritzbox" >> config.txt
 
-                #add value of repeater ip to ip_repeater
-		echo -n "Enter ip adress  of Fritz device$i and press [ENTER]:" 
-                read ip_repeater
-
-                #add values to array fritzdevice_name
-                fritzdevice_name+=("fritz_device$i")
-                #add values to array repeater_id
-                fritzdevice_ip+=("$ip_repeater") 
-
-        i=$[$i+1] 
-        done
-
-
-        # save fritzdevice_name  values inside configfile
-        for dn in "${fritzdevice_name[*]}"
-        do      
-                 echo "fritzdevice_names=($dn)" 
-		done >>config.txt
-
-        # save repeater_id values inside configfile
-        for dn in "${fritzdevice_ip[*]}"
-        do
-                 echo "fritzdevice_ips=($dn)" 
-        done >>config.txt
-
-	# end added new code
-	
 	echo -n "Enter ip adres of domoticz including port default: 127.0.0.1:8080 and press [ENTER]: "
 	read ip_domoticz 
 	echo "ip_domoticz=$ip_domoticz" >> config.txt
@@ -323,6 +295,8 @@ fi
 				create_auto=0;
 				fi
 
+    echo "Searching for devices on your fritzbox, you can copy paste mac adres"
+    python $cwd/fritzhosts.py -i $ip_fritzbox -p $pass_fritzbox    
 	echo -n "Enter number of devices you want to monitor and press [ENTER]:"
 	read number_of_devices
 	i=1
@@ -397,7 +371,7 @@ fi
 echo
 echo "Installation is complete"
 echo "You have to add the script to your crontab so it will check every minute if devices are on your network." 
-echo "you can do this to  add this line :  * * * * * $cwd/presence_detection.sh  to your crontab. "
+echo "you can do this to  add this line so it runs every minute :  * * * * * $cwd/presence_detection.sh  to your crontab. "
 echo "all the settings are written inside the config.txt file. If you want to change anything you can also change the settings inside this file." 
 echo "Don't forget to disable wifi security on your devices on your home network wifi  "
 echo "More Questions and answers can be found on: https://github.com/hydex80/presence_detection_domoticz_fritzbox"
