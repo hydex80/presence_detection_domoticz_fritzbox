@@ -134,13 +134,6 @@ fi
 
 if [ "$show_debug" = 1 ]; then
 
-#print all devices into columns 
-echo ""
-echo "Overview of status Fritbox vs Domotics"
-echo "----------------------------------------------------------------------------------" 
-printf '%s %s %s %s %s\n' "${devices_output[@]}" | column -t
-echo "----------------------------------------------------------------------------------" 
-
 echo "dependencies installed:" 
 echo "installed python version:" 
 python --version
@@ -152,6 +145,13 @@ echo "config file variables:"
 echo "---------------------"
 cat $cwd/config.txt
 echo "---------------------"
+#print all devices into columns 
+echo ""
+echo "Overview of status Fritbox vs Domotics"
+echo "----------------------------------------------------------------------------------" 
+printf '%s %s %s %s %s\n' "${devices_output[@]}" | column -t
+echo "----------------------------------------------------------------------------------" 
+
 fi
 
 # install script
