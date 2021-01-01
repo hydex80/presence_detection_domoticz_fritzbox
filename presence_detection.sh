@@ -369,7 +369,10 @@ fi
 	printf "\033c"
     	sudo bash presence_detection.sh debug
 	fi
-echo
+	
+echo "Setting right permissions for presence_detection.sh"
+chmod +x $cwd/presence_detection.sh
+echo 
 echo "Installation is complete"
 echo "Note! Depending on how many devices are on the network it can take up to 10 minutes before you see a status change"
 echo "Please be patient wait a couple of minutes and try again if you see no changes."
