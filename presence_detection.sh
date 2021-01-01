@@ -371,7 +371,7 @@ fi
 	fi
 	
 echo "Setting right permissions for presence_detection.sh"
-chmod +x $cwd/presence_detection.sh
+sudo chmod +x $cwd/presence_detection.sh
 echo 
 echo "Installation is complete"
 echo "Note! Depending on how many devices are on the network it can take up to 10 minutes before you see a status change"
