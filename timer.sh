@@ -1,6 +1,8 @@
-# Script to test how long the fritzbox needs to put off given device. 
-#Put after -i ip of fritzbox and after -d mac address of your device
-test=$(sudo python fritzhosts.py -i 192.168.178.1 -p test -d CC:1C:75:41:2C:62 -q)
+#Script to test how long the fritzbox needs to put off given device. 
+#change variables Ip = fritzbox ip and mac_adress = mac adres device you want to test
+ip_fritzbox=192.168.178.1
+mac_address=CC:1C:75:41:2C:62
+# end changing variables
 
 SECONDS=0
 
@@ -13,7 +15,7 @@ echo "excuting script on $now this can take to over 10 minutes (Press Ctrl C to 
 while true
 do
         echo -ne '.'
-        
+        test=$(sudo python fritzhosts.py -i $ip_fritzbox -p test -d $mac_address -q)        
         if [ $test == "0" ]; then
                 break
         fi
