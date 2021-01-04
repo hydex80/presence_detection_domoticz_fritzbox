@@ -48,6 +48,9 @@ Make sure to give your devices including your fritzbox repeater (if you have any
 6. Run the script with: ```sudo bash presence_detection.sh``` 
 
 7. A installer will appear fill in all the questions and at the end copy the line for your crontab. (run crontab with: crontab -e) 
+
+8. It can take up to 10 minutes before you see a status change to off. You can run the timer.sh if you want exacly know how long it takes
+(first edit timer.sh and change variables for a test) The on status is within a second ;) This is a FritzBox issue and not a script issue.  
 ------------------------
 # Installation instructions for SYNOLOGY only. (thnx Kubra)
 
